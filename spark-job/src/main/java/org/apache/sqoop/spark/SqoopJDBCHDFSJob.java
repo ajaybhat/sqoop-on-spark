@@ -1,57 +1,18 @@
 package org.apache.sqoop.spark;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.sqoop.common.Direction;
 import org.apache.sqoop.driver.Driver;
-import org.apache.sqoop.model.MConfigList;
-import org.apache.sqoop.model.MConnector;
-import org.apache.sqoop.model.MDriverConfig;
-import org.apache.sqoop.model.MFromConfig;
-import org.apache.sqoop.model.MJob;
-import org.apache.sqoop.model.MLink;
-import org.apache.sqoop.model.MLinkConfig;
-import org.apache.sqoop.model.MToConfig;
+import org.apache.sqoop.model.*;
 import org.apache.sqoop.repository.RepositoryManager;
 
 public class SqoopJDBCHDFSJob {
 
-  @SuppressWarnings("static-access")
-  static Options createOptions() {
-
-    Options options = new Options();
-
-    options.addOption(OptionBuilder.withLongOpt("jdbcString")
-        .withDescription("jdbc connection string").hasArg().isRequired()
-        .withArgName("jdbcConnectionString").create());
-
-    options.addOption(OptionBuilder.withLongOpt("u").withDescription("jdbc username").hasArg()
-        .isRequired().withArgName("username").create());
-
-    options.addOption(OptionBuilder.withLongOpt("p").withDescription("jdbc password").hasArg()
-        .withArgName("password").create());
-
-    options.addOption(OptionBuilder.withLongOpt("table").withDescription("jdbc table").hasArg()
-        .isRequired().withArgName("table").create());
-
-    options.addOption(OptionBuilder.withLongOpt("partitionCol")
-        .withDescription("jdbc table parition column").hasArg().withArgName("pc").create());
-
-    options.addOption(OptionBuilder.withLongOpt("outputDir").withDescription("hdfs output dir")
-        .hasArg().isRequired().withArgName("outputDir").create());
-
-    SqoopSparkJob.addCommonOptions(options);
-
-    return options;
-  }
-
   public static void main(String[] args) throws Exception {
-
     final SqoopSparkJob sparkJob = new SqoopSparkJob();
-    CommandLine cArgs = SqoopSparkJob.parseArgs(createOptions(), args);
+    CommandLine cArgs = SqoopSparkJob.parseArgs(SqoopSparkOptionsUtil.createOptions(), args);
     SparkConf conf = sparkJob.init(cArgs);
     JavaSparkContext context = new JavaSparkContext(conf);
 
@@ -66,7 +27,7 @@ public class SqoopJDBCHDFSJob {
     MLink fromLink = new MLink(fromConnector.getPersistenceId(), fromLinkConfig);
     fromLink.setName("jdbcLink-" + System.currentTimeMillis());
     fromLink.getConnectorLinkConfig().getStringInput("linkConfig.jdbcDriver")
-        .setValue("com.mysql.jdbc.Driver");
+        .setValue("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
     fromLink.getConnectorLinkConfig().getStringInput("linkConfig.connectionString")
         .setValue(cArgs.getOptionValue("jdbcString"));

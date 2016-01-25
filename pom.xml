@@ -87,8 +87,8 @@ limitations under the License.
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compile.source>1.6</maven.compile.source>
-    <maven.compile.target>1.6</maven.compile.target>
+    <maven.compile.source>1.8</maven.compile.source>
+    <maven.compile.target>1.8</maven.compile.target>
     <commons-cli.version>1.2</commons-cli.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <commons-lang.version>2.5</commons-lang.version>
@@ -367,7 +367,7 @@ limitations under the License.
         <artifactId>hadoop-client</artifactId>
         <version>${hadoop.2.version}</version>
         <scope>provided</scope>
-				
+
         <exclusions>
           <exclusion>
             <groupId>org.mortbay.jetty</groupId>
@@ -392,21 +392,21 @@ limitations under the License.
         <artifactId>hadoop-mapreduce-client-core</artifactId>
         <version>${hadoop.2.version}</version>
         <scope>provided</scope>
-				
+
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-mapreduce-client-jobclient</artifactId>
         <version>${hadoop.2.version}</version>
         <scope>provided</scope>
-				
+
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-minicluster</artifactId>
         <version>${hadoop.2.version}</version>
         <scope>provided</scope>
-				
+
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>
@@ -642,7 +642,7 @@ limitations under the License.
         <artifactId>hadoop-common</artifactId>
         <version>${hadoop.2.version}</version>
         <scope>provided</scope>
-				
+
       </dependency>
       <dependency>
        <groupId>org.apache.avro</groupId>
@@ -654,28 +654,28 @@ limitations under the License.
        <artifactId>spark-core_${scala.minor.version}</artifactId>
        <version>${spark.version}</version>
        <scope>provided</scope>
-			 
+
      </dependency>
      <dependency>
        <groupId>org.apache.spark</groupId>
        <artifactId>spark-yarn_${scala.minor.version}</artifactId>
        <version>${spark.version}</version>
        <scope>provided</scope>
-			 
+
      </dependency>
      <dependency>
        <groupId>org.apache.spark</groupId>
        <artifactId>spark-streaming_${scala.minor.version}</artifactId>
        <version>${spark.version}</version>
        <scope>provided</scope>
-			 
+
      </dependency>
      <dependency>
        <groupId>org.apache.spark</groupId>
        <artifactId>spark-streaming-kafka_${scala.minor.version}</artifactId>
        <version>${spark.version}</version>
        <scope>provided</scope>
-			 
+
      </dependency>
 	 <dependency>
 	 	<groupId>com.esotericsoftware.kryo</groupId>
@@ -686,7 +686,7 @@ limitations under the License.
        <groupId>io.netty</groupId>
        <artifactId>netty-all</artifactId>
        <version>${netty.version}</version>
-     </dependency>	 
+     </dependency>
    </dependencies>
   </dependencyManagement>
 
@@ -698,7 +698,7 @@ limitations under the License.
     <module>server</module>
     <module>client</module>
     <module>shell</module>
-    <module>docs</module>
+  <!--  <module>docs</module> -->
     <module>connector</module>
     <module>execution</module>
     <module>submission</module>

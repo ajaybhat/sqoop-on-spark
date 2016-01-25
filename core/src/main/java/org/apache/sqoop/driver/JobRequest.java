@@ -17,15 +17,6 @@
  */
 package org.apache.sqoop.driver;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.sqoop.common.Direction;
 import org.apache.sqoop.common.DirectionError;
 import org.apache.sqoop.common.MutableMapContext;
@@ -35,6 +26,10 @@ import org.apache.sqoop.connector.spi.SqoopConnector;
 import org.apache.sqoop.job.etl.Transferable;
 import org.apache.sqoop.model.MSubmission;
 import org.apache.sqoop.utils.ClassUtils;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Submission details class is used when creating new submission and contains
@@ -360,4 +355,59 @@ public class JobRequest implements Serializable {
     return map;
   }
 
+  @Override
+  public String toString() {
+    return "JobRequest{" +
+            "\njobSubmission=" + jobSubmission +
+            ", \njobName='" + jobName + '\'' +
+            ", \njobId=" + jobId +
+            ", \nfromConnector=" + fromConnector +
+            ", \ntoConnector=" + toConnector +
+            ", \njars=" + jars +
+            ", \nfrom=" + from +
+            ", \nto=" + to +
+            ", \nfromConnectorLinkConfig=" + fromConnectorLinkConfig +
+            ", \ntoConnectorLinkConfig=" + toConnectorLinkConfig +
+            ", \nfromConfig=" + fromConfig +
+            ", \ntoConfig=" + toConfig +
+            ", \ndriverConfig=" + driverConfig +
+            ", \nfromConnectorContext=" + fromConnectorContext +
+            ", \ntoConnectorContext=" + toConnectorContext +
+            ", \ndriverContext=" + driverContext +
+            ", \nnotificationUrl='" + notificationUrl + '\'' +
+            ", \nextractors=" + extractors +
+            ", \nloaders=" + loaders +
+            ", \nfromIDF=" + fromIDF +
+            ", \ntoIDF=" + toIDF +
+            ", \nrowData=" + rowData +
+            ", \nmap=" + new PrettyPrintingMap<String,String>(map).toString() +
+            "\n}";
+  }
+
+  public class PrettyPrintingMap<K, V> {
+    private Map<K, V> map;
+
+    public PrettyPrintingMap(Map<K, V> map) {
+      this.map = map;
+    }
+
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("{\n");
+      Iterator<Entry<K, V>> iter = map.entrySet().iterator();
+      while (iter.hasNext()) {
+        Entry<K, V> entry = iter.next();
+        sb.append(entry.getKey());
+        sb.append('=').append('"');
+        sb.append(entry.getValue());
+        sb.append('"');
+        if (iter.hasNext()) {
+          sb.append(',').append('\n');
+        }
+      }
+      sb.append("}\n");
+      return sb.toString();
+
+    }
+  }
 }

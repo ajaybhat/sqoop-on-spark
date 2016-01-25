@@ -1,14 +1,6 @@
 package org.apache.sqoop.spark;
 
-import java.io.Serializable;
-import java.util.ListIterator;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.sqoop.common.Direction;
@@ -21,6 +13,9 @@ import org.apache.sqoop.model.MJob;
 import org.apache.sqoop.model.MSubmission;
 import org.apache.sqoop.request.HttpEventContext;
 import org.apache.sqoop.submission.spark.SqoopSparkDriver;
+
+import java.io.Serializable;
+import java.util.ListIterator;
 
 public class SqoopSparkJob implements Serializable {
 
@@ -98,6 +93,7 @@ public class SqoopSparkJob implements Serializable {
       conf.set(SqoopSparkDriver.NUM_LOADERS, cArgs.getOptionValue("numL"));
     }
     // hack to load extra classes directly
+    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     Class.forName("com.mysql.jdbc.Driver");
     SqoopServer.initialize();
     return conf;

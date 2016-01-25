@@ -17,10 +17,6 @@
  */
 package org.apache.sqoop.connector.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 import org.apache.sqoop.common.SqoopException;
 import org.apache.sqoop.connector.jdbc.configuration.FromJobConfiguration;
@@ -34,6 +30,10 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 
 public class GenericJdbcExtractor extends Extractor<LinkConfiguration, FromJobConfiguration, GenericJdbcPartition> {
 
@@ -45,14 +45,13 @@ public class GenericJdbcExtractor extends Extractor<LinkConfiguration, FromJobCo
     GenericJdbcExecutor executor = new GenericJdbcExecutor(linkConfig.linkConfig);
 
     String query = context.getString(GenericJdbcConnectorConstants.CONNECTOR_JDBC_FROM_DATA_SQL);
-    
     System.out.println("Using query: " + query);
 
     String conditions = partition.getCondition();
-    System.out.println("conditions" + conditions);
-    
+    System.out.println("conditions: " + conditions);
+
     query = query.replace(GenericJdbcConnectorConstants.SQL_CONDITIONS_TOKEN, conditions);
-    LOG.info("Using query: " + query);
+    System.out.println("Query after replacing CONDITIONS: "+query);
 
     rowsRead = 0;
     ResultSet resultSet = executor.executeQuery(query);

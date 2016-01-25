@@ -1,9 +1,5 @@
 package org.apache.sqoop.submission.spark;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.spark.SparkConf;
@@ -21,6 +17,8 @@ import org.apache.sqoop.job.etl.Partitioner;
 import org.apache.sqoop.job.etl.PartitionerContext;
 import org.apache.sqoop.schema.Schema;
 import org.apache.sqoop.utils.ClassUtils;
+
+import java.util.List;
 
 public class SqoopSparkDriver {
 
@@ -46,14 +44,22 @@ public class SqoopSparkDriver {
     List<Partition> sp = getPartitions(request, numExtractors);
     System.out.println(">>> Partition size:" + sp.size());
 
+
     JavaRDD<Partition> rdd = sc.parallelize(sp, sp.size());
     JavaRDD<List<IntermediateDataFormat<?>>> mapRDD = rdd.map(new SqoopExtractFunction(
         request));
+
+    System.out.println("Partitions:");
+
     // if max loaders or num loaders is given reparition to adjust the max
     // loader parallelism
     if (numLoaders != numExtractors) {
       JavaRDD<List<IntermediateDataFormat<?>>> reParitionedRDD = mapRDD.repartition(numLoaders);
       System.out.println(">>> RePartition RDD size:" + reParitionedRDD.partitions().size());
+      System.out.println("Request: "+request);
+      System.out.println();
+
+      System.out.println("Sqoop Load function:"+new SqoopLoadFunction(request));
       reParitionedRDD.mapPartitions(new SqoopLoadFunction(request)).collect();
     } else {
       System.out.println(">>> Mapped RDD size:" + mapRDD.partitions().size());

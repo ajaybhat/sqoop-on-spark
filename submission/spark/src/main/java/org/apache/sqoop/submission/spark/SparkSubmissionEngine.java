@@ -17,10 +17,6 @@
  */
 package org.apache.sqoop.submission.spark;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkException;
 import org.apache.sqoop.common.MapContext;
@@ -32,6 +28,10 @@ import org.apache.sqoop.execution.spark.SparkExecutionEngine;
 import org.apache.sqoop.execution.spark.SparkJobRequest;
 import org.apache.sqoop.model.MSubmission;
 import org.apache.sqoop.model.SubmissionError;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * This is very simple and straightforward implementation of spark submission
@@ -61,12 +61,13 @@ public class SparkSubmissionEngine extends SubmissionEngine {
   public boolean submit(JobRequest jobRequest) {
     // We're supporting only map reduce jobs
     SparkJobRequest request = (SparkJobRequest) jobRequest;
-
+LOG.debug(String.format("Starting the job: %s", request));
     sqoopConf.add("spark.master", "local");// + request.getExtractors() + "]");
 
     // setYarnConfig(request);
 
     try {
+      LOG.debug(String.format("Trying to execute with config: %s", sqoopConf));
       sparkClient.execute(jobRequest);
     } catch (Exception e) {
       SubmissionError error = new SubmissionError();
